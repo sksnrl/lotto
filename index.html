@@ -7,47 +7,49 @@
   <style>
     body {
       font-family: 'Arial', sans-serif;
-      background-color: #00FF00; /* 크로마키 녹색 */
+      background: #008400;
       margin: 0;
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
       color: #fff;
+      overflow: hidden;
     }
     .container {
       text-align: center;
       padding: 15px;
-      background: rgba(255, 55, 100, 0.9);
-      border-radius: 15px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+      background: linear-gradient(145deg, #ff6347, #ff4500);
+      border-radius: 115px;
+  
     }
     h1 {
-      margin-bottom: 0px;
-      font-size: 2.0em;
-      animation: glow 4.0s infinite;
+      font-size: 2.5em;
+      margin-bottom: 20px;
+      animation: textGlow 4s infinite;
     }
-    @keyframes glow {
+    @keyframes textGlow {
       0%, 100% {
-        text-shadow: 0 0 5px #e1d, 0 0 10px #fff, 0 0 20px #ff8c00, 0 0 30px #ff0000;
+        text-shadow: 0 0 5px #fff, 0 0 10px #ffa500, 0 0 20px #ff4500, 0 0 30px #ff0000;
       }
       50% {
-        text-shadow: 0 0 10px #000, 0 0 20px #ffa500, 0 0 40px #ff6347, 0 0 60px #ff4500;
+        text-shadow: 0 0 10px #ff6347, 0 0 20px #ffa07a, 0 0 40px #ff4500;
       }
-    }    .numbers {
+    }
+    .numbers {
       display: flex;
       justify-content: center;
-      gap: 5px;
-      margin: 20px 0;
+      gap: 10px;
+      margin: 3px 0;
     }
     .number {
-      width: 60px;
-      height: 60px;
-      overflow: hidden; /* 가로 한 줄만 보이게 설정 */
-      border-radius: 10px;
-      background: #fff;
+      width: 70px;
+      height: 70px;
+      overflow: hidden; /* 슬롯 외부 숫자 숨기기 */
+      border-radius: 50px;
+      background: linear-gradient(145deg, #fff, #ffe);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3), 0 0 10px rgba(255, 255, 255, 0.7);
       position: relative;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     }
     .roller {
       position: absolute;
@@ -56,37 +58,37 @@
       width: 100%;
       height: 100%;
       transform: translateY(0);
-      transition: transform 3s cubic-bezier(0.25, 0.1, 0.25, 1);
     }
     .roller div {
       width: 100%;
-      height: 60px;
-      line-height: 60px;
+      height: 70px;
+      line-height: 70px;
       text-align: center;
-      font-size: 1.5em;
+      font-size: 2.5em;
+      font-weight: normal;
       color: #333;
-      font-weight: bold;
-      background: #fff;
     }
     button {
-      padding: 8px 30px;
-      font-size: 1.0em;
+      margin: 8px 0;
+	  padding: 8px 40px;
+      font-size: 1.2em;
       color: #fff;
-      background: #ff6347;
+      background: linear-gradient(145deg, #ff6347, #ff4500);
       border: none;
       border-radius: 5px;
       cursor: pointer;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-      transition: background 0.3s;
+
+      transition: all 0.3s ease;
     }
     button:hover {
-      background: #ff4500;
+      background: linear-gradient(145deg, #ff4500, #ff6347);
     }
   </style>
 </head>
 <body>
+<div>
   <div class="container">
-    <h1>제니네 로또방</h1>
+      <!--    <h1>제니네 로또방</h1> -->
     <div class="numbers" id="numbers">
       <!-- 빈 슬롯머신 롤러 6개 -->
       <div class="number"><div class="roller"></div></div>
@@ -96,10 +98,9 @@
       <div class="number"><div class="roller"></div></div>
       <div class="number"><div class="roller"></div></div>
     </div>
-    <button onclick="generateLottoNumbers()">GO</button>
-    <audio id="spinSound" src="1.mp3"></audio>
   </div>
-
+<center>    <button onclick="generateLottoNumbers()">GO</button>
+    <audio id="spinSound" src="1.mp3"></audio></div>
   <script>
     function generateLottoNumbers() {
       const numberDivs = document.querySelectorAll('.roller');
@@ -108,12 +109,9 @@
 
       // 기존 상태 초기화
       numberDivs.forEach((roller) => {
-        roller.style.transition = 'none'; // 애니메이션 효과 제거
-        roller.style.transform = 'translateY(0)'; // 초기 위치로 리셋
-        roller.innerHTML = ''; // 숫자 초기화
-        setTimeout(() => {
-          roller.style.transition = 'transform 3s cubic-bezier(0.25, 0.1, 0.25, 1)'; // 애니메이션 다시 활성화
-        }, 50); // 레이아웃 업데이트 이후 재적용
+        roller.style.transition = 'none';
+        roller.style.transform = 'translateY(0)';
+        roller.innerHTML = '';
       });
 
       // 랜덤 번호 6개 생성
@@ -124,9 +122,17 @@
         }
       }
 
-      // 롤러 애니메이션 설정
+      // 효과음 재생
+      spinSound.currentTime = 0;
+      spinSound.play();
+
+      // 각 롤러 설정
       numberDivs.forEach((roller, index) => {
-        for (let i = 0; i < 10; i++) {
+        const spinCount = Math.floor(Math.random() * 5) + 10; // 랜덤 회전 횟수
+        const finalNum = finalNumbers[index];
+
+        // 숫자 채우기
+        for (let i = 0; i < spinCount; i++) {
           const div = document.createElement('div');
           div.textContent = Math.floor(Math.random() * 45) + 1; // 랜덤 숫자
           roller.appendChild(div);
@@ -134,24 +140,19 @@
 
         // 최종 숫자 추가
         const finalDiv = document.createElement('div');
-        finalDiv.textContent = finalNumbers[index];
+        finalDiv.textContent = finalNum;
         roller.appendChild(finalDiv);
 
         // 애니메이션 시작
-        const totalHeight = 60 * (10 + 1); // 숫자 높이 × (랜덤 숫자 + 최종 숫자)
+        const totalHeight = 70 * (spinCount + 1);
         setTimeout(() => {
-          roller.style.transform = `translateY(-${totalHeight - 60}px)`;
-        }, 100); // 약간의 딜레이를 두고 실행
+          roller.style.transition = 'transform 4s cubic-bezier(0.25, 1, 0.5, 1)';
+          roller.style.transform = `translateY(-${totalHeight - 70}px)`;
+        }, 100 + index * 300); // 딜레이 추가
       });
 
-      // 효과음 재생
-      spinSound.currentTime = 0; // 재생 위치 초기화
-      spinSound.play();
-
-      // 효과음 종료 처리
-      setTimeout(() => {
-        spinSound.pause();
-      }, 3000); // 3초 뒤 효과음 멈춤
+      // 효과음 종료
+      setTimeout(() => spinSound.pause(), 5000);
     }
   </script>
 </body>
