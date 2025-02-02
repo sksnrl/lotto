@@ -43,8 +43,8 @@
       margin: 3px 0;
     }
     .number {
-      width: 36px;
-      height: 36px;
+      width: 45px;
+      height: 45px;
       overflow: hidden; /* 슬롯 외부 숫자 숨기기 */
       border-radius: 50px;
       background: linear-gradient(145deg, #fff, #ffe);
@@ -61,10 +61,10 @@
     }
     .roller div {
       width: 100%;
-      height: 36px;
-      line-height: 36px;
+      height: 45px;
+      line-height: 45px;
       text-align: center;
-      font-size: 1.2em;
+      font-size: 1.3em;
       font-weight: normal;
       color: #333;
     }
@@ -144,7 +144,7 @@
         roller.appendChild(finalDiv);
 
         // 애니메이션 시작
-        const totalHeight = 37 * (spinCount + 1);
+        const totalHeight = 45.4 * (spinCount + 1);
         setTimeout(() => {
           roller.style.transition = 'transform 4s cubic-bezier(0.25, 1, 0.5, 1)';
           roller.style.transform = `translateY(-${totalHeight - 50}px)`;
