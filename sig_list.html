@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>무한 이미지 스크롤</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: transparent;
+      overflow: hidden;
+      width: 320px;
+      height: 1080px;
+    }
+
+    .container {
+      width: 320px;
+      height: 1080px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .scroll-images {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 320px;
+    }
+
+    .scroll-images img {
+      width: 320px;
+      height: 1080px;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="scroll-images" id="scrollImages">
+      <!-- 이미지 1세트 -->
+      <img src="img1.png" alt="Image 1">
+      <img src="img2.png" alt="Image 2">
+      <img src="img3.png" alt="Image 3">
+      <!-- 이미지 복제 세트 (무한 루프용) -->
+      <img src="img1.png" alt="Image 1 Clone">
+      <img src="img2.png" alt="Image 2 Clone">
+      <img src="img3.png" alt="Image 3 Clone">
+    </div>
+  </div>
+
+  <script>
+    const scrollContainer = document.getElementById("scrollImages");
+    const imageHeight = 1080;
+    const totalImages = 6; // 3원본 + 3복제
+    let currentIndex = 0;
+
+    const waitTime = 2000;   // 이미지 정지 시간 (1.5초)
+    const scrollDuration = 500; // 스크롤 시간 (0.5초)
+
+    function scrollNext() {
+      currentIndex++;
+      scrollContainer.style.transition = `transform ${scrollDuration}ms ease-in-out`;
+      scrollContainer.style.transform = `translateY(-${currentIndex * imageHeight}px)`;
+
+      // 이미지 끝까지 도달하면 리셋
+      if (currentIndex === totalImages / 2 * 2 - 1) { // 5번째 (마지막 클론) 도달 시
+        setTimeout(() => {
+          scrollContainer.style.transition = 'none'; // 즉시 이동
+          scrollContainer.style.transform = `translateY(-${(totalImages / 2 - 1) * imageHeight}px)`;
+          currentIndex = totalImages / 2 - 1; // 2번째 세트 첫 이미지 위치로 설정
+        }, scrollDuration);
+      }
+    }
+
+    setInterval(scrollNext, waitTime + scrollDuration); // 2초 간격 (1.5초 대기 + 0.5초 이동)
+  </script>
+</body>
+</html>
