@@ -11,30 +11,31 @@
       --card:#0b1220cc;
       --lane:#0f172a;
       --lane-alt:#111827;
+      --stroke:#38bdf8;
+      --panel:#0d1529;
     }
+    *{box-sizing:border-box}
     body{
       margin:0;
       font-family: system-ui, -apple-system, Segoe UI, Roboto, Noto Sans KR, Arial;
       background: radial-gradient(70% 60% at 70% 10%, #38bdf8 0%, var(--bg1) 30%, var(--bg2) 100%);
       color:#e5e7eb;
-      padding:20px;
     }
-    .app{max-width:1100px;margin:auto}
+    .app{max-width:1200px;margin:auto;padding:20px}
     .card{
       background:var(--card);
       border-radius:24px;
-      padding:18px;
+      padding:16px;
     }
     h1{margin:6px 0 14px;font-size:28px;}
     .controls{margin-bottom:12px;}
-    .row{margin:8px 0;}
+    .row{margin:8px 0; display:flex; flex-wrap:wrap; gap:8px; align-items:center;}
     input,select{
       background:#0b1220;
       color:#e5e7eb;
       border:1px solid #243045;
       border-radius:12px;
       padding:6px 10px;
-      margin-right:6px;
     }
     .btn{
       border:none;
@@ -45,45 +46,112 @@
       background: linear-gradient(180deg, #22d3ee, #0ea5e9);
       color:#0b1220;
     }
-    .track{
-      position:relative;
-      height:auto;
-      max-height:400px;
-      padding:12px;
-      border-radius:18px;
-      background:#0d1529;
-      overflow-x:auto;
-      white-space:nowrap;
+    .gamewrap{
+      display:grid;
+      grid-template-columns: 1fr 260px;
+      gap:12px;
     }
-    .lanes-wrapper{display:inline-block}
-    .lane{
-      position:relative;
-      height:64px;
-      margin:8px 0;
-      border-radius:12px;
-      background:linear-gradient(180deg,var(--lane),var(--lane-alt));
+    .scene{
+      position: relative;
+      width: 800px;
+      height: 620px;
+      overflow: hidden;
+      background-image: url('bg.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+    .track3d{
+      position:absolute; left:50%; bottom:-1560px;
+      transform: translateX(-50%) rotateX(62deg);
+      width:980px; height:2200px;
+      border-radius:820px;
+      background:
+        radial-gradient(60% 100% at 50% 100%, #0d1628 0%, #0b1220 60%, transparent 21%),
+        repeating-linear-gradient(to top, #122037 0 80px, #0f1a30 80px 160px);
+      outline: 2px solid #0c1a2f;
+      box-shadow:0 0 0 3px #0a1425 inset, 0 -80px 120px #000 inset;
+    }
+    .laneCenter {
+      position:absolute; left:50%; bottom:-260px;
+      transform: translateX(-50%) rotateX(62deg);
+      width:6px; height:2200px; border-radius:4px;
+      background: repeating-linear-gradient(to top, #ffffffaa 0 30px, #ffffff33 30px 60px);
+      filter: drop-shadow(0 0 6px #fff);
+      pointer-events:none;
     }
     .penguin{
       position:absolute;
-      left:0;top:50%;
-      transform:translateY(-50%);
-      font-size:28px;
-      display:flex;
-      align-items:center;
-      gap:6px;
-      white-space:nowrap;
+      bottom:40px;
+      font-size:38px;
+      transform-origin:center bottom;
+      text-shadow:0 0 6px #000;
+      display:flex; flex-direction:column; align-items:center; gap:2px;
+      will-change: transform;
     }
-    .finish{
-      position:absolute;top:0;bottom:0;right:0;width:20px;border-left:3px solid gold;
+    .pname{
+      font-size:12px; padding:2px 6px; border-radius:10px;
+      background:#0b1220cc; border:1px solid #243045; white-space:nowrap;
     }
+    .fx{
+      position:absolute; bottom:46px; font-size:20px; pointer-events:none;
+      animation: pop .6s ease-out;
+    }
+    @keyframes pop { 0%{transform:translateY(0) scale(0.6);opacity:0} 20%{opacity:1} 100%{transform:translateY(-24px) scale(1);opacity:0} }
+
+    .hud{
+      background:var(--panel);
+      border-radius:18px;
+      padding:12px;
+      display:flex; flex-direction:column; gap:10px;
+      min-height:520px;
+    }
+    .hud h3{margin:0 0 4px;font-size:16px}
+    .stat{
+      display:flex; justify-content:space-between; font-size:14px;
+      background:#0b1220; border:1px solid #243045; border-radius:12px; padding:6px 10px;
+    }
+    .leaderboard{
+      background:#0b1220; border:1px solid #243045; border-radius:12px; padding:8px;
+      font-size:14px; max-height:160px; overflow:auto;
+    }
+    .lb-item{display:flex;justify-content:space-between;padding:4px 6px;border-radius:8px}
+    .lb-item:nth-child(1){background:#1b2a44}
+    .lb-item:nth-child(2){background:#19263f}
+    .lb-item:nth-child(3){background:#172239}
+
+    .minimap{
+      position:relative; height:280px; border-radius:12px;
+      background: linear-gradient(180deg,#0c1424,#0d1529);
+      border:1px solid #243045;
+      overflow:hidden;
+    }
+    .mm-track{
+      position:absolute; left:50%; top:8px; bottom:8px; width:10px; transform:translateX(-50%);
+      background: linear-gradient(180deg,#1f2d4c,#0f1a30);
+      border-radius:6px;
+      box-shadow: inset 0 0 0 2px #0a1425;
+    }
+    .mm-finish{
+      position:absolute; left:50%; transform:translateX(-50%);
+      width:14px; height:4px; background: gold; bottom:8px; border-radius:2px; box-shadow:0 0 10px gold;
+    }
+    .marker{
+      position:absolute; left:50%; transform:translate(-50%,-50%);
+      width:14px; height:14px; border-radius:50%; border:2px solid #000;
+      box-shadow:0 0 0 2px #0006;
+    }
+
     .results{margin-top:10px;font-size:14px}
-    .badge{background:#0b1220;border:1px solid #243045;padding:4px 6px;border-radius:10px;margin-right:4px;}
+    .badge{background:#0b1220;border:1px solid #243045;padding:4px 6px;border-radius:10px;margin:2px;display:inline-block;}
+    .helper{font-size:12px;opacity:.8}
   </style>
 </head>
 <body>
   <div class="app">
     <div class="card">
       <h1>🐧 채안 레이싱</h1>
+
       <div class="controls">
         <div class="row">
           참가자 수 <input id="count" type="number" min="2" max="10" value="4"/>
@@ -97,147 +165,290 @@
             <option value="normal" selected>보통</option>
             <option value="long">길게</option>
           </select>
+          Lap 수 <select id="laps">
+            <option>1</option>
+            <option selected>3</option>
+            <option>5</option>
+          </select>
         </div>
         <div class="row" id="nameFields"></div>
         <div class="row">
           <button class="btn" id="startBtn">레이스 시작</button>
           <button class="btn" id="resetBtn">초기화</button>
           <button class="btn" id="rerunBtn" disabled>재경기</button>
+          <span class="helper">💡 아이템: 🚀로켓 / 🍌바나나 / ❄️빙결 / ⚡번개</span>
         </div>
       </div>
 
-      <div class="track" id="track"><div class="lanes-wrapper"></div></div>
-      <div class="results" id="results"></div>
+      <div class="gamewrap">
+        <div class="scene" id="scene">
+          <div class="track3d"></div>
+          <div class="laneCenter"></div>
+          <div id="penguins"></div>
+          <div id="hudTop" style="position:absolute; left:50%; top:10px; transform:translateX(-50%); display:flex; gap:10px;">
+            <div class="stat" id="lapHud" style="min-width:120px">Lap 1/3</div>
+            <div class="stat" id="speedHud" style="min-width:120px">속도: 0</div>
+          </div>
+          <div id="podium" style="position:absolute; left:50%; bottom:10px; transform:translateX(-50%); display:flex; gap:6px;"></div>
+        </div>
+        <div class="hud">
+          <div class="stat"><span>상태</span><span id="raceState">대기 중</span></div>
+          <div>
+            <h3>순위</h3>
+            <div class="leaderboard" id="leaderboard"></div>
+          </div>
+          <div>
+            <h3>미니맵</h3>
+            <div class="minimap">
+              <div class="mm-track"></div>
+              <div class="mm-finish"></div>
+              <div id="mmArea"></div>
+            </div>
+          </div>
+          <div class="results" id="results"></div>
+        </div>
+      </div>
     </div>
   </div>
 
-  <script>
-    const $=(s,r=document)=>r.querySelector(s);
-    const state={racers:[],running:false,raf:null,lengthPx:0,finished:[],config:{mode:"random",length:"normal"}};
+<script>
+const $=(s,r=document)=>r.querySelector(s);
+const scene=$('#scene'), penguinsEl=$('#penguins'), lbEl=$('#leaderboard');
+const mmArea=$('#mmArea'), resultsEl=$('#results'), stateEl=$('#raceState');
+const lapHud=$('#lapHud'), speedHud=$('#speedHud'), podiumEl=$('#podium');
 
-    const countInput=$('#count'),applyBtn=$('#applyCount'),nameFields=$('#nameFields'),
-      trackEl=$('#track'),startBtn=$('#startBtn'),resetBtn=$('#resetBtn'),
-      rerunBtn=$('#rerunBtn'),resultsEl=$('#results'),modeSel=$('#mode'),lenSel=$('#length');
+const countInput=$('#count'),applyBtn=$('#applyCount'),nameFields=$('#nameFields'),
+  startBtn=$('#startBtn'),resetBtn=$('#resetBtn'),rerunBtn=$('#rerunBtn'),
+  modeSel=$('#mode'),lenSel=$('#length'),lapsSel=$('#laps');
 
-    function makeNameFields(n){
-      nameFields.innerHTML='';
-      for(let i=0;i<n;i++){
-        const input=document.createElement('input');
-        input.type='text'; input.placeholder=`펭귄${i+1}`; input.id=`name-${i}`;
-        nameFields.appendChild(input);
-      }
-    }
-    function collectNames(){
-      const n=Math.max(2,Math.min(10,parseInt(countInput.value||'4')));
-      countInput.value=n;
-      return Array.from({length:n},(_,i)=>$('#name-'+i)?.value?.trim()||`펭귄${i+1}`);
-    }
-    function buildTrack(names){
-      trackEl.innerHTML='<div class="lanes-wrapper"></div>';
-      const wrapper=$('.lanes-wrapper',trackEl);
-      let laneLength=2000;
-      if(state.config.length==='short') laneLength=1000;
-      else if(state.config.length==='long') laneLength=5000;
-      state.lengthPx=laneLength-60;
-      state.racers=names.map((nm,i)=>{
-        const lane=document.createElement('div');lane.className='lane';lane.style.width=laneLength+'px';
-        const penguin=document.createElement('div');penguin.className='penguin';penguin.dataset.id=i;
-        penguin.innerHTML=`🐧 <span class="pname">${nm}</span>`;
-        const finish=document.createElement('div');finish.className='finish';
-        lane.appendChild(penguin); lane.appendChild(finish); wrapper.appendChild(lane);
-        return {id:i,name:nm,el:penguin,x:0,finishedAt:null,itemCooldown:0,shield:false};
-      });
-      state.finished=[]; resultsEl.innerHTML='';
-    }
-    function baseStep(){
-      switch(state.config.length){
-        case 'short':return 0.5;
-        case 'long':return 0.3;
-        default:return 0.4;
-      }
-    }
-    function applyItem(r){
-      const roll=Math.random();
-      if(r.itemCooldown>0) return 0;
-      if(roll<0.05){
-        // 🚀 부스터
-        r.el.firstChild.textContent="🚀🐧"; r.itemCooldown=80;
-        setTimeout(()=>r.el.firstChild.textContent="🐧",800);
-        return 5+Math.random()*3;
-      }else if(roll<0.09){
-        // 🍌 바나나
-        r.el.firstChild.textContent="🍌🐧"; r.itemCooldown=80;
-        setTimeout(()=>r.el.firstChild.textContent="🐧",800);
-        return -(3+Math.random()*2);
-      }else if(roll<0.12){
-        // 🛡️ 방패
-        r.shield=true; r.el.firstChild.textContent="🛡️🐧";
-        setTimeout(()=>{r.shield=false;r.el.firstChild.textContent="🐧";},2000);
-      }else if(roll<0.15){
-        // ❄️ 얼음덫: 다른 랜덤 상대 둔화
-        const others=state.racers.filter(o=>o.id!==r.id && o.finishedAt===null);
-        if(others.length){
-          const target=others[Math.floor(Math.random()*others.length)];
-          target.slowUntil=performance.now()+2000;
-          target.el.firstChild.textContent="❄️🐧";
-          setTimeout(()=>target.el.firstChild.textContent="🐧",2000);
-        }
-      }
-      return 0;
-    }
-    function tick(){
-      state.racers.forEach(r=>{
-        if(r.finishedAt!==null) return;
-        let extra=0;
-        if(state.config.mode==='random'){
-          extra=(Math.random()*3)-1; // -1~+2
-        } else {
-          extra=0.4+Math.random()*0.2;
-        }
-        extra+=applyItem(r);
-        r.itemCooldown=Math.max(0,r.itemCooldown-1);
-        if(r.slowUntil && performance.now()<r.slowUntil) extra*=0.5;
-        if(extra<0 && r.shield) extra=0; // 방패로 감속 무효화
-        r.x+=baseStep()+extra;
-        if(r.x<0) r.x=0;
-        if(r.x>=state.lengthPx){ r.x=state.lengthPx; r.finishedAt=performance.now(); state.finished.push(r); }
-        r.el.style.left=r.x+"px";
-      });
-      // 카메라 따라가기
-      const leader=state.racers.reduce((a,b)=>a.x>b.x?a:b,state.racers[0]);
-      const targetX=leader.x-window.innerWidth/2+200;
-      trackEl.scrollLeft=Math.max(0,targetX);
-      if(state.finished.length===state.racers.length){endRace();return;}
-      state.raf=requestAnimationFrame(tick);
-    }
-    function startRace(){
-      if(state.running)return;
-      state.config.mode=modeSel.value; state.config.length=lenSel.value;
-      buildTrack(collectNames());
-      state.running=true;
-      state.raf=requestAnimationFrame(tick);
-    }
-    function endRace(){
-      cancelAnimationFrame(state.raf); state.running=false; rerunBtn.disabled=false;
-      resultsEl.innerHTML="결과: "+state.finished.map((r,i)=>`<span class="badge">${i+1}위 ${r.name}${i===0?" 🏆":""}</span>`).join(" ");
-    }
-    function resetAll(){
-      if(state.raf) cancelAnimationFrame(state.raf);
-      state.running=false;state.racers=[];state.finished=[];resultsEl.innerHTML='';
-      trackEl.innerHTML='<div class="lanes-wrapper"></div>'; rerunBtn.disabled=true;
-    }
-    function rerun(){
-      if(!state.racers.length){startRace();return;}
-      state.racers.forEach(r=>{r.x=0;r.finishedAt=null;r.el.style.left="0px";});
-      state.finished=[];resultsEl.innerHTML='';state.running=true;rerunBtn.disabled=true;
-      state.raf=requestAnimationFrame(tick);
-    }
+const state={
+  racers:[], running:false, raf:null,
+  lapCount:3, lapLength:600, totalLength:1800,
+  finished:[], config:{mode:"random",length:"normal"},
+  lastTick:0
+};
 
-    applyBtn.addEventListener('click',()=>makeNameFields(countInput.value));
-    startBtn.addEventListener('click',startRace);
-    resetBtn.addEventListener('click',resetAll);
-    rerunBtn.addEventListener('click',rerun);
-    makeNameFields(countInput.value);
-  </script>
+function makeNameFields(n){
+  nameFields.innerHTML='';
+  for(let i=0;i<n;i++){
+    const input=document.createElement('input');
+    input.type='text'; input.placeholder=`펭귄${i+1}`; input.id=`name-${i}`;
+    nameFields.appendChild(input);
+  }
+}
+
+function collectNames(){
+  const n=Math.max(2,Math.min(10,parseInt(countInput.value||'4')));
+  countInput.value=n;
+  return Array.from({length:n},(_,i)=>$('#name-'+i)?.value?.trim()||`펭귄${i+1}`);
+}
+
+function computeLapLength(){
+  switch(state.config.length){
+    case 'short': state.lapLength=450; break;
+    case 'long': state.lapLength=800; break;
+    default: state.lapLength=600;
+  }
+  state.lapCount=parseInt(lapsSel.value||'3');
+  state.totalLength=state.lapLength*state.lapCount;
+}
+
+function buildRace(names){
+  penguinsEl.innerHTML=''; mmArea.innerHTML=''; lbEl.innerHTML=''; resultsEl.innerHTML='';
+  podiumEl.innerHTML=''; state.finished=[];
+
+  const baseLeft=scene.clientWidth/2;
+  const gap=70, startOffset=-((names.length-1)/2)*gap;
+
+  state.racers=names.map((nm,i)=>{
+    const el=document.createElement('div');
+    el.className='penguin';
+    el.innerHTML=`<div class="fx"></div>🐧<div class="pname">${nm}</div>`;
+    const xOffset=startOffset+i*gap;
+    el.style.left=(baseLeft + xOffset)+'px';
+    penguinsEl.appendChild(el);
+
+    const mk=document.createElement('div');
+    mk.className='marker';
+    const colors=['#f43','#ff0','#0f0','#0ff','#c0f','#fa0','#6cf','#f6c','#9f9','#fff'];
+    mk.style.background=colors[i%colors.length];
+    mk.style.top='12px';
+    mmArea.appendChild(mk);
+
+    return { id:i, name:nm, el, marker:mk, dist:0, finishedAt:null, itemCooldown:0, shield:false, slowUntil:0, boostUntil:0, xOffset };
+  });
+
+  updateHUD();
+  updateLeaderboard();
+  updatePodium();
+}
+
+function showFx(r,emoji){
+  const fx=r.el.querySelector('.fx');
+  fx.textContent=emoji;
+  fx.style.animation='none'; fx.offsetHeight;
+  fx.style.animation='pop .6s ease-out';
+}
+
+function baseStep(){
+  switch(state.config.length){
+    case 'short':return 0.7;
+    case 'long':return 0.45;
+    default:return 0.55;
+  }
+}
+
+// ===== 아이템 적용 =====
+function applyItem(r){
+  if(r.itemCooldown > 0) return 0;
+  const roll = Math.random();
+  if(roll < 0.25){ 
+    r.itemCooldown=120; showFx(r,'🚀'); return 8 + Math.random()*4; // 로켓
+  } else if(roll < 0.5){ 
+    r.itemCooldown=120; showFx(r,'🍌'); r.slowUntil=performance.now()+1500; return -4 - Math.random()*2; // 바나나
+  } else if(roll < 0.75){ 
+    r.itemCooldown=120; showFx(r,'❄️'); r.slowUntil=performance.now()+1800; return 0; // 얼음
+  } else { 
+    r.itemCooldown=120; showFx(r,'⚡'); r.boostUntil=performance.now()+1000; return 0; // 번개
+  }
+}
+
+function racerStep(r, dt){
+  if(r.finishedAt!==null) return 0;
+
+  let extra = state.config.mode==='random'? (Math.random()*2.6-0.6) : (0.45+Math.random()*0.25);
+  extra += applyItem(r);
+
+  if(r.slowUntil && performance.now() < r.slowUntil){
+    if(extra>=0) extra *=0.5;
+  }
+  if(r.boostUntil && performance.now() < r.boostUntil) extra *=2;
+
+  r.itemCooldown=Math.max(0,r.itemCooldown-1);
+
+  const step=(baseStep()+extra)*(dt/16.67);
+  r.dist += step;
+  if(r.dist<0) r.dist=0;
+  if(r.dist>=state.totalLength){ r.dist=state.totalLength; r.finishedAt=performance.now(); state.finished.push(r); }
+  return step;
+}
+
+function placeRacer(r){
+  const progressTotal=r.dist/state.totalLength;
+  const progressLap=(r.dist%state.lapLength)/state.lapLength;
+  const y = progressLap * 620;
+  const scale = 1.0 - progressLap*0.72;
+  r.el.style.transform=`translate(-50%, -${y}px) scale(${scale})`;
+  const mmTop = 14 + progressTotal*(280-28);
+  r.marker.style.top = `${mmTop}px`;
+}
+
+function updateHUD(){
+  const leader = state.racers.reduce((a,b)=>a.dist>b.dist?a:b,state.racers[0]);
+  const currentLap = Math.min(state.lapCount, 1 + Math.floor(leader.dist / state.lapLength));
+  lapHud.textContent = `Lap ${currentLap}/${state.lapCount}`;
+  speedHud.textContent = `속도: ${Math.max(0,(leader._lastStep||0)*3).toFixed(1)}`;
+}
+
+function updateLeaderboard(){
+  const sorted = state.racers
+    .slice()
+    .sort((a,b)=>{
+      if(a.finishedAt && b.finishedAt) return a.finishedAt - b.finishedAt;
+      if(a.finishedAt) return -1;
+      if(b.finishedAt) return 1;
+      return b.dist - a.dist;
+    });
+
+  lbEl.innerHTML = sorted.map((r,i)=>{
+    return `<div class="lb-item">
+              <span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:${r.marker.style.background};margin-right:6px;"></span>
+              <span>${i+1}위 ${r.name}</span>
+            </div>`;
+  }).join('');
+}
+
+function updatePodium(){
+  const sorted = state.racers
+    .slice()
+    .sort((a,b)=>{
+      if(a.finishedAt && b.finishedAt) return a.finishedAt - b.finishedAt;
+      if(a.finishedAt) return -1;
+      if(b.finishedAt) return 1;
+      return b.dist - a.dist;
+    })
+    .slice(0,3);
+  podiumEl.innerHTML = sorted.map((r,i)=>`
+    <div class="badge">
+      <span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:${r.marker.style.background};margin-right:4px;"></span>
+      ${i+1}위 ${r.name}
+    </div>
+  `).join('');
+}
+
+function tick(ts){
+  if(!state.running) return;
+  if(!state.lastTick) state.lastTick=ts;
+  const dt=Math.min(32, ts-state.lastTick);
+  state.lastTick=ts;
+
+  state.racers.forEach(r=>{
+    const step=racerStep(r, dt);
+    r._lastStep=step;
+    placeRacer(r);
+  });
+
+  updateHUD();
+  updateLeaderboard();
+  updatePodium();
+
+  if(state.finished.length>=state.racers.length){
+    state.running=false;
+    state.raf=null;
+    stateEl.textContent='레이스 종료';
+    rerunBtn.disabled=false;
+    resultsEl.innerHTML = state.finished.map((r,i)=>`${i+1}위: ${r.name}`).join('<br>');
+    return;
+  }
+
+  state.raf=requestAnimationFrame(tick);
+}
+
+// ===== 이벤트 =====
+applyBtn.addEventListener('click',()=>makeNameFields(parseInt(countInput.value||4)));
+startBtn.addEventListener('click',()=>{
+  const names=collectNames();
+  state.config.mode=modeSel.value;
+  state.config.length=lenSel.value;
+  computeLapLength();
+  buildRace(names);
+  state.running=true;
+  stateEl.textContent='레이스 중';
+  rerunBtn.disabled=true;
+  state.lastTick=0;
+  state.raf=requestAnimationFrame(tick);
+});
+resetBtn.addEventListener('click',()=>{ 
+  state.running=false;
+  state.raf=null;
+  penguinsEl.innerHTML=''; mmArea.innerHTML=''; lbEl.innerHTML=''; podiumEl.innerHTML=''; resultsEl.innerHTML='';
+  stateEl.textContent='대기 중';
+  state.racers=[]; state.finished=[];
+  rerunBtn.disabled=true;
+});
+rerunBtn.addEventListener('click',()=>{
+  state.finished=[];
+  state.racers.forEach(r=>{r.dist=0; r.finishedAt=null; r.itemCooldown=0; r.slowUntil=0; r.boostUntil=0;});
+  state.running=true;
+  stateEl.textContent='레이스 중';
+  rerunBtn.disabled=true;
+  state.lastTick=0;
+  state.raf=requestAnimationFrame(tick);
+});
+
+// 초기 이름칸
+makeNameFields(parseInt(countInput.value||4));
+</script>
+
 </body>
 </html>
